@@ -40,6 +40,21 @@ describe('UserService', () => {
     expect(response.data['email']).toBe(demoUser.email);
   });
 
+  it('should request forgot password', async () => {
+    const response = await service.forgotPassword({
+      email: demoUser.email,
+    });
+    expect(response).toBeUndefined();
+  });
+
+  it('should reset password with OTP', async () => {
+    const response = await service.resetPassword({
+      code: '123456',
+      password: 'password',
+    });
+    expect(response).toBeUndefined();
+  });
+
   it('should change password', async () => {
     const response = await service.changePassword(
       { old_password: 'password', password: 'password' },

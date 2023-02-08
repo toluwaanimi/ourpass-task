@@ -7,6 +7,7 @@ import * as bcrypt from 'bcryptjs';
 import { JwtHelper } from '../../common/helper/jwt.helper';
 import { InternalCacheService } from '../../internal-cache/internal-cache.service';
 import { JWT_SECRET_EXPIRES } from '../../config/env.config';
+import { Helpers } from '../../common/helper';
 
 @Injectable()
 export class UserService {
@@ -99,6 +100,51 @@ export class UserService {
     return {
       data: account.toJSON(),
     };
+  }
+
+  async forgotPassword(payload: { email: string }): Promise<IService> {
+    const user = await this.userRepository.findOne({
+      where: {
+        email: payload.email,
+      },
+    });
+    if (!user) {
+      throw new BadRequestException('Invalid account with this email');
+    }
+
+    const code = Helpers.generateOTP(6);
+    await this.internalCacheService.set(code, user.id, { ttl: 3600 });
+    // Implement event to push to a queue for notification
+    return;
+  }
+
+  async resetPassword(payload: {
+    password: string;
+    code: string;
+  }): Promise<IService> {
+    const userId = await this.internalCacheService.get(payload.code);
+    if (!userId) {
+      throw new BadRequestException('OTP expired');
+    }
+
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+    });
+    if (!user) {
+      throw new BadRequestException('OTP expired');
+    }
+    await this.userRepository.update(
+      {
+        id: user.id,
+      },
+      {
+        password: bcrypt.hashSync(payload.password, 8),
+      },
+    );
+    await this.internalCacheService.delete(payload.code);
+    return;
   }
 
   async changePassword(
