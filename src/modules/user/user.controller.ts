@@ -10,6 +10,7 @@ import {
 import { UserService } from './user.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
+  ChangePasswordDTO,
   ForgotPasswordDTO,
   LoginDTO,
   RegisterDTO,
@@ -79,7 +80,18 @@ export class UserController {
     @GetCurrentUser() user: IUser,
   ) {
     await this.userService.updateProfile(body, user);
-    return HttpResponseHelper.send('update  successful');
+    return HttpResponseHelper.send('updated  successfully');
+  }
+
+  @Put('account')
+  @ApiOperation({ summary: 'update user account' })
+  @HttpCode(200)
+  async changePassword(
+    @Body() body: ChangePasswordDTO,
+    @GetCurrentUser() user: IUser,
+  ) {
+    await this.userService.changePassword(body, user);
+    return HttpResponseHelper.send('password updated  successfully');
   }
 
   @Post('logout')

@@ -61,3 +61,13 @@ export class UpdateAccountDTO {
   @ApiProperty()
   phone_number: string;
 }
+
+export class ChangePasswordDTO {
+  @IsNotEmpty()
+  @ApiProperty()
+  password: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  old_password: string;
+}
