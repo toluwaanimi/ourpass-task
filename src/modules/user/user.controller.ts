@@ -54,7 +54,7 @@ export class UserController {
     return HttpResponseHelper.send('request successful');
   }
 
-  @Post('auth/forgot-password')
+  @Post('auth/reset-password')
   @ApiOperation({ summary: 'Reset password with token ' })
   @HttpCode(200)
   async resetPassword(@Body() body: ResetPasswordDTO) {

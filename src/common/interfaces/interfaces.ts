@@ -16,6 +16,14 @@ export interface IUser {
   phone_number: string;
 }
 
+export interface ICategory {
+  name: string;
+
+  slug: string;
+
+  id: string;
+}
+
 export interface ILogin {
   email: string;
 

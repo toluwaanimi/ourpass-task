@@ -33,6 +33,7 @@ export class CategoryService {
         },
       ],
     });
+    console.log(existingCategory);
     if (existingCategory) {
       throw new BadRequestException('Category exist already');
     }
@@ -47,10 +48,18 @@ export class CategoryService {
   }
 
   async findAll(query: IPaginate, user: IUser): Promise<IService> {
-    const categories = await paginate(this.categoryRepository, {
-      page: query.page ? query.page : 1,
-      limit: query.per_page ? query.per_page : 50,
-    });
+    const categories = await paginate(
+      this.categoryRepository,
+      {
+        page: query.page ? query.page : 1,
+        limit: query.per_page ? query.per_page : 50,
+      },
+      {
+        where: {
+          userId: user.id,
+        },
+      },
+    );
     return {
       data: categories.items,
       meta: categories.meta,
