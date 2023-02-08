@@ -1,34 +1,64 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
 import { CategoryService } from './category.service';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CreateCategoryDTO, UpdateCategoryDTO } from './dto/category.dto';
+import { AuthGuard } from '../../common/guards/auth.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { GetCurrentUser } from '../../common/decorators/get-user.decorator';
+import { IUser } from '../../common/interfaces';
+import { PaginateDTO } from '../../common/dto/paginate.dto';
+import { HttpResponseHelper } from '../../common/helper/http-response.helper';
 
 @Controller('category')
+@UseGuards(AuthGuard)
+@ApiBearerAuth()
+@ApiTags('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoryService.create(createCategoryDto);
+  async create(
+    @Body() createCategoryDto: CreateCategoryDTO,
+    @GetCurrentUser() user: IUser,
+  ) {
+    const response = await this.categoryService.create(createCategoryDto, user);
+    return HttpResponseHelper.send('category created', response);
   }
 
   @Get()
-  findAll() {
-    return this.categoryService.findAll();
+  async findAll(@GetCurrentUser() user: IUser, @Query() query: PaginateDTO) {
+    const response = await this.categoryService.findAll(query, user);
+    return HttpResponseHelper.send('categories retrieved', response);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoryService.findOne(+id);
+  async findOne(@Param('id') id: string, @GetCurrentUser() user: IUser) {
+    const response = await this.categoryService.findOne(id, user);
+    return HttpResponseHelper.send('category retrieved', response);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
-    return this.categoryService.update(+id, updateCategoryDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateCategoryDto: UpdateCategoryDTO,
+    @GetCurrentUser() user: IUser,
+  ) {
+    await this.categoryService.update(id, updateCategoryDto, user);
+    return HttpResponseHelper.send('category updated');
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoryService.remove(+id);
+  async remove(@Param('id') id: string, @GetCurrentUser() user: IUser) {
+    await this.categoryService.remove(id, user);
+    return HttpResponseHelper.send('category deleted');
   }
 }

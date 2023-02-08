@@ -1,6 +1,7 @@
 import { AbstractEntity } from '../../../common/database/model/base.entity';
 import { Column, Entity, Index, OneToMany } from 'typeorm';
 import { Post } from '../../post/entities/post.entity';
+import { Category } from '../../category/entities/category.entity';
 
 @Entity('users')
 export class User extends AbstractEntity {
@@ -22,6 +23,9 @@ export class User extends AbstractEntity {
 
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
+
+  @OneToMany(() => Category, (category) => category.user)
+  categories: Category[];
 
   toJSON() {
     return {
