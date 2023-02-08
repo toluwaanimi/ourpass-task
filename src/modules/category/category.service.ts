@@ -33,7 +33,6 @@ export class CategoryService {
         },
       ],
     });
-    console.log(existingCategory);
     if (existingCategory) {
       throw new BadRequestException('Category exist already');
     }
