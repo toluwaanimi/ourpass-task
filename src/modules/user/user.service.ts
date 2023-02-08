@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { ILogin, IService } from '../../common/interfaces';
+import { ILogin, IRegister, IService } from '../../common/interfaces';
 import * as bcrypt from 'bcryptjs';
 import { JwtHelper } from '../../common/helper/jwt.helper';
 
@@ -35,9 +35,8 @@ export class UserService {
     };
   }
 
-  async register(payload): Promise<IService> {
+  async register(payload: IRegister): Promise<IService> {
     payload.email = payload.email.toLowerCase();
-    payload.username = payload.username.toLowerCase();
     payload.phone_number = payload.phone_number.replace('+', '');
 
     const foundUser = await this.userRepository.findOne({
