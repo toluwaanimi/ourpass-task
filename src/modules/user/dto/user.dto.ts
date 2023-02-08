@@ -3,9 +3,11 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class LoginDTO {
   @IsEmail()
+  @ApiProperty()
   email: string;
 
   @IsNotEmpty()
+  @ApiProperty()
   password: string;
 }
 

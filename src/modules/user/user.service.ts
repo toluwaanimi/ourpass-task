@@ -2,14 +2,17 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { ILogin, IRegister, IService } from '../../common/interfaces';
+import { ILogin, IRegister, IService, IUser } from '../../common/interfaces';
 import * as bcrypt from 'bcryptjs';
 import { JwtHelper } from '../../common/helper/jwt.helper';
+import { InternalCacheService } from '../../internal-cache/internal-cache.service';
+import { JWT_SECRET_EXPIRES } from '../../config/env.config';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly internalCacheService: InternalCacheService,
   ) {}
 
   async login(input: ILogin): Promise<IService> {
@@ -27,6 +30,9 @@ export class UserService {
     }
 
     const jwt = await JwtHelper.signToken(user);
+    await this.internalCacheService.set(jwt, user.id, {
+      ttl: JWT_SECRET_EXPIRES,
+    });
     return {
       data: {
         ...user.toJSON(),
@@ -64,6 +70,9 @@ export class UserService {
       delete user.password;
 
       const jwt = await JwtHelper.signToken(user);
+      await this.internalCacheService.set(jwt, user.id, {
+        ttl: JWT_SECRET_EXPIRES,
+      });
       return {
         data: {
           ...user,
@@ -71,9 +80,42 @@ export class UserService {
         },
       };
     } catch (e) {
+      console.log(e);
       throw new BadRequestException(
         'Something went wrong, kindly contact support',
       );
     }
+  }
+
+  async getProfile(user: IUser): Promise<IService> {
+    const account = await this.userRepository.findOne({
+      where: {
+        id: user.id,
+      },
+    });
+    if (!account) {
+      throw new BadRequestException('Invalid account');
+    }
+    return {
+      data: account.toJSON(),
+    };
+  }
+
+  async changePassword(
+    payload: { old_password: any; password: any },
+    user: IUser,
+  ): Promise<IService> {
+    if (!bcrypt.compareSync(payload.old_password, user.password)) {
+      throw new BadRequestException('Invalid old password');
+    }
+    await this.userRepository.update(
+      {
+        id: user.id,
+      },
+      {
+        password: bcrypt.hashSync(payload.password, 8),
+      },
+    );
+    return;
   }
 }
