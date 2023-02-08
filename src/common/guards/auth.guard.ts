@@ -9,9 +9,11 @@ import { verify } from 'jsonwebtoken';
 import { getRepository } from 'typeorm';
 import { JWT_SECRET } from '../../config/env.config';
 import { User } from '../../modules/user/entities/user.entity';
+import { InternalCacheService } from '../../internal-cache/internal-cache.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+  constructor(private readonly internalCacheService: InternalCacheService) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     try {
@@ -21,6 +23,11 @@ export class AuthGuard implements CanActivate {
       }
       const token = Authorization.split(' ');
       if (!((token[1] && token[0] === 'Bearer') || token[0] === 'bearer')) {
+        throw new UnauthorizedException('Unauthorized request');
+      }
+
+      const cachedToken = await this.internalCacheService.get(token[1]);
+      if (!cachedToken) {
         throw new UnauthorizedException('Unauthorized request');
       }
       let decrypt;
@@ -41,6 +48,7 @@ export class AuthGuard implements CanActivate {
       }
 
       request.user = user;
+      request.token = token[1];
       return true;
     } catch (e) {
       throw new UnauthorizedException('Unauthorized request');

@@ -32,3 +32,32 @@ export class RegisterDTO {
   @ApiProperty()
   phone_number: string;
 }
+
+export class ForgotPasswordDTO {
+  @IsEmail()
+  @ApiProperty()
+  email: string;
+}
+
+export class ResetPasswordDTO {
+  @IsNotEmpty()
+  @ApiProperty()
+  code: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  password: string;
+}
+export class UpdateAccountDTO {
+  @IsNotEmpty()
+  @ApiProperty()
+  first_name: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  last_name: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  phone_number: string;
+}

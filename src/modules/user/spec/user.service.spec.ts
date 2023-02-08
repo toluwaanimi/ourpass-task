@@ -5,6 +5,7 @@ import { InternalCacheModule } from '../../../internal-cache/internal-cache.modu
 
 describe('UserService', () => {
   let service: UserService;
+  let token: string;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -30,6 +31,7 @@ describe('UserService', () => {
       email: demoUser.email,
       password: 'password',
     });
+    token = response.data['token'];
     expect(response.data['first_name']).toBe(demoUser.first_name);
     expect(response.data['email']).toBe(demoUser.email);
   });
@@ -60,6 +62,23 @@ describe('UserService', () => {
       { old_password: 'password', password: 'password' },
       demoUser,
     );
+    expect(response).toBeUndefined();
+  });
+
+  it('should update user profile', async () => {
+    const response = await service.updateProfile(
+      {
+        first_name: demoUser.first_name,
+        last_name: demoUser.last_name,
+        phone_number: demoUser.phone_number,
+      },
+      demoUser,
+    );
+    expect(response).toBeUndefined();
+  });
+
+  it('should logout user', async () => {
+    const response = await service.logoutUser(token);
     expect(response).toBeUndefined();
   });
 });

@@ -148,7 +148,7 @@ export class UserService {
   }
 
   async changePassword(
-    payload: { old_password: any; password: any },
+    payload: { old_password: string; password: string },
     user: IUser,
   ): Promise<IService> {
     if (!bcrypt.compareSync(payload.old_password, user.password)) {
@@ -162,6 +162,33 @@ export class UserService {
         password: bcrypt.hashSync(payload.password, 8),
       },
     );
+    return;
+  }
+
+  async updateProfile(
+    payload: { first_name?: string; last_name?: string; phone_number?: string },
+    user: IUser,
+  ): Promise<IService> {
+    await this.userRepository.update(
+      {
+        id: user.id,
+      },
+      {
+        first_name: payload.first_name || user.first_name,
+        last_name: payload.last_name || user.last_name,
+        phone_number: payload.phone_number || user.phone_number,
+      },
+    );
+    return;
+  }
+
+  async logoutUser(userToken): Promise<IService> {
+    const token = await this.internalCacheService.get(userToken);
+    if (!token) {
+      throw new BadRequestException('Something went wrong');
+    }
+
+    await this.internalCacheService.delete(userToken);
     return;
   }
 }
