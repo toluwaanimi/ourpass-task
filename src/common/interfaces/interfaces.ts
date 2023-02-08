@@ -16,6 +16,14 @@ export interface IUser {
   phone_number: string;
 }
 
+export interface IPost {
+  name: string;
+
+  text: string;
+
+  id: string;
+}
+
 export interface ICategory {
   name: string;
 
