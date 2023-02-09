@@ -8,6 +8,8 @@ import {
   Delete,
   Query,
   UseGuards,
+  Put,
+  HttpCode,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { GetCurrentUser } from '../../common/decorators/get-user.decorator';
@@ -26,6 +28,7 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Post()
+  @HttpCode(200)
   async create(
     @Body() createPostDTO: CreatePostDTO,
     @GetCurrentUser() user: IUser,
@@ -46,7 +49,7 @@ export class PostController {
     return HttpResponseHelper.send('post retrieved', response);
   }
 
-  @Patch(':id')
+  @Put(':id')
   async update(
     @Param('id') id: string,
     @Body() updatePostDTO: UpdatePostDTO,

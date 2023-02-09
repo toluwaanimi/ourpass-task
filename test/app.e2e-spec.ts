@@ -4,6 +4,7 @@ import * as request from 'supertest';
 import { getConnection } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { TestModule } from './test.module';
+import { demoCategory } from './category/category.mock';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -23,8 +24,10 @@ describe('AppController (e2e)', () => {
   });
 
   let token = '';
+  let categoryId = '';
+  let postId = '';
 
-  describe('Endpoints', () => {
+  describe('User Routes', () => {
     const email = faker.internet.email();
     const firstName = faker.name.firstName();
     const lastName = faker.name.lastName();
@@ -125,7 +128,61 @@ describe('AppController (e2e)', () => {
           expect(res.body.status).toBe(true);
         });
     });
+  });
 
+  describe('Category Routes', () => {
+    console.log(token);
+    it('/category (POST)', async () => {
+      return await request(app.getHttpServer())
+        .post('/category')
+        .send({
+          name: demoCategory.name,
+          slug: demoCategory.slug,
+        })
+        .set('Authorization', `Bearer ${token}`)
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+          categoryId = res.body.data.id;
+        });
+    });
+
+    it('/category (GET)', async () => {
+      return await request(app.getHttpServer())
+        .get('/category')
+        .set('Authorization', `Bearer ${token}`)
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+        });
+    });
+
+    it('/category/:id (GET)', async () => {
+      return await request(app.getHttpServer())
+        .get('/category/' + categoryId)
+        .set('Authorization', `Bearer ${token}`)
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+        });
+    });
+
+    it('/category/:id (GET)', async () => {
+      return await request(app.getHttpServer())
+        .put('/category/' + categoryId)
+        .send({
+          name: demoCategory.name,
+          slug: demoCategory.slug,
+        })
+        .set('Authorization', `Bearer ${token}`)
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+        });
+    });
+  });
+
+  describe('Logout after', () => {
     it('/user/account/logout (PUT)', async () => {
       return await request(app.getHttpServer())
         .post('/user/logout')
@@ -135,6 +192,5 @@ describe('AppController (e2e)', () => {
           expect(res.body.status).toBe(true);
         });
     });
-    //
   });
 });

@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Query,
+  Put,
+  HttpCode,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDTO, UpdateCategoryDTO } from './dto/category.dto';
@@ -17,6 +19,7 @@ import { GetCurrentUser } from '../../common/decorators/get-user.decorator';
 import { IUser } from '../../common/interfaces';
 import { PaginateDTO } from '../../common/dto/paginate.dto';
 import { HttpResponseHelper } from '../../common/helper/http-response.helper';
+import { async } from 'rxjs';
 
 @Controller('category')
 @UseGuards(AuthGuard)
@@ -26,6 +29,7 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Post()
+  @HttpCode(200)
   async create(
     @Body() createCategoryDto: CreateCategoryDTO,
     @GetCurrentUser() user: IUser,
@@ -46,7 +50,7 @@ export class CategoryController {
     return HttpResponseHelper.send('category retrieved', response);
   }
 
-  @Patch(':id')
+  @Put(':id')
   async update(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDTO,
