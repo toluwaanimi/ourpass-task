@@ -15,10 +15,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       url: POSTGRES_DB_URL,
       logging: false,
       namingStrategy: new SnakeNamingStrategy(),
-      synchronize: true,
+      synchronize: false,
       migrationsRun: true,
       entities: [join(__dirname, '../dist/**/**/**.js')],
-      migrations: [join(__dirname, '../dist/migrations/**.js')],
+      migrations: [join(__dirname, '../dist/common/database/migrations/**.js')],
       subscribers: [join(__dirname, '../dist/subscribers/**.js')],
       extra: {
         ssl:

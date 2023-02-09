@@ -2,8 +2,9 @@ import { AbstractEntity } from '../../../common/database/model/base.entity';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Post } from '../../post/entities/post.entity';
 import { User } from '../../user/entities/user.entity';
+import { JoinColumn } from 'typeorm';
 
-@Entity('category')
+@Entity('categories')
 export class Category extends AbstractEntity {
   @Column({ nullable: true })
   name: string;
@@ -18,6 +19,7 @@ export class Category extends AbstractEntity {
     eager: true,
     nullable: true,
   })
+  @JoinColumn()
   user: User;
 
   @Column({ nullable: true })

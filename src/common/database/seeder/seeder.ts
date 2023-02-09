@@ -3,7 +3,7 @@ import { getRepository } from 'typeorm';
 import { User } from '../../../modules/user/entities/user.entity';
 import { Category } from '../../../modules/category/entities/category.entity';
 import { Post } from '../../../modules/post/entities/post.entity';
-
+import * as bcrpyt from 'bcryptjs';
 const categories = [];
 const posts = [];
 
@@ -11,8 +11,8 @@ export async function seedRecord() {
   const user = await getRepository(User).save({
     first_name: faker.name.firstName(),
     last_name: faker.name.lastName(),
-    email: faker.internet.email(),
-    password: 'password',
+    email: faker.internet.email().toLowerCase(),
+    password: bcrpyt.hashSync('password', 8),
     phone_number: '+23480' + faker.random.numeric(8),
   });
 
