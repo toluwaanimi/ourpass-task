@@ -35,9 +35,9 @@ describe('AppController (e2e)', () => {
     const password = 'password';
     const phoneNumber = '+23481' + faker.random.numeric(8);
 
-    it('/user/auth/register (POST)', async () => {
+    it('/api/v1/user/auth/register (POST)', async () => {
       return await request(app.getHttpServer())
-        .post('/user/auth/register')
+        .post('/api/v1/user/auth/register')
         .send({
           email: email,
           first_name: firstName,
@@ -51,10 +51,10 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/user/auth/login (POST)', async () => {
+    it('/api/v1/user/auth/login (POST)', async () => {
       console.log(email, password);
       return await request(app.getHttpServer())
-        .post('/user/auth/login')
+        .post('/api/v1/user/auth/login')
         .send({
           email: email,
           password: password,
@@ -66,9 +66,9 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/account (GET)', async () => {
+    it('/api/v1/user/account (GET)', async () => {
       return await request(app.getHttpServer())
-        .get('/user/account')
+        .get('/api/v1/user/account')
         .set('Authorization', `Bearer ${token}`)
         .then((res) => {
           expect(res.status).toBe(200);
@@ -76,9 +76,9 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/user/auth/forgot-password (POST)', async () => {
+    it('/api/v1/user/auth/forgot-password (POST)', async () => {
       return await request(app.getHttpServer())
-        .post('/user/auth/forgot-password')
+        .post('/api/v1/user/auth/forgot-password')
         .send({
           email: email,
         })
@@ -88,9 +88,9 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/user/auth/reset-password (POST)', async () => {
+    it('/api/v1/user/auth/reset-password (POST)', async () => {
       return await request(app.getHttpServer())
-        .post('/user/auth/reset-password')
+        .post('/api/v1/user/auth/reset-password')
         .send({
           password: 'password',
           code: '123456',
@@ -101,9 +101,9 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/user/account (PUT)', async () => {
+    it('/api/v1/user/account (PUT)', async () => {
       return await request(app.getHttpServer())
-        .put('/user/account')
+        .put('/api/v1/user/account')
         .send({
           first_name: firstName,
           last_name: lastName,
@@ -116,9 +116,9 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/account/password (PUT)', async () => {
+    it('/api/v1/account/password (PUT)', async () => {
       return await request(app.getHttpServer())
-        .put('/user/account/password')
+        .put('/api/v1/user/account/password')
         .send({
           password: password,
           old_password: password,
@@ -132,10 +132,9 @@ describe('AppController (e2e)', () => {
   });
 
   describe('Category Routes', () => {
-    console.log(token);
-    it('/category (POST)', async () => {
+    it('/api/v1/category (POST)', async () => {
       return await request(app.getHttpServer())
-        .post('/category')
+        .post('/api/v1/category')
         .send({
           name: demoCategory.name,
           slug: demoCategory.slug,
@@ -148,9 +147,9 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/category (GET)', async () => {
+    it('/api/v1/category (GET)', async () => {
       return await request(app.getHttpServer())
-        .get('/category')
+        .get('/api/v1/category')
         .set('Authorization', `Bearer ${token}`)
         .then((res) => {
           expect(res.status).toBe(200);
@@ -158,9 +157,9 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/category/:id (GET)', async () => {
+    it('/api/v1/category/:id (GET)', async () => {
       return await request(app.getHttpServer())
-        .get('/category/' + categoryId)
+        .get('/api/v1/category/' + categoryId)
         .set('Authorization', `Bearer ${token}`)
         .then((res) => {
           expect(res.status).toBe(200);
@@ -168,9 +167,9 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/category/:id (PUT)', async () => {
+    it('/api/v1/category/:id (PUT)', async () => {
       return await request(app.getHttpServer())
-        .put('/category/' + categoryId)
+        .put('/api/v1/category/' + categoryId)
         .send({
           name: demoCategory.name,
           slug: demoCategory.slug,
@@ -184,9 +183,9 @@ describe('AppController (e2e)', () => {
   });
 
   describe('Post Routes', () => {
-    it('/post (POST)', async () => {
+    it('/api/v1/post (POST)', async () => {
       return await request(app.getHttpServer())
-        .post('/post')
+        .post('/api/v1/post')
         .send({
           name: demoPost.name,
           text: demoPost.text,
@@ -200,9 +199,9 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/post (GET)', async () => {
+    it('/api/v1/post (GET)', async () => {
       return await request(app.getHttpServer())
-        .get('/post')
+        .get('/api/v1/post')
         .set('Authorization', `Bearer ${token}`)
         .then((res) => {
           expect(res.status).toBe(200);
@@ -210,9 +209,9 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/post/:id (GET)', async () => {
+    it('/api/v1/post/:id (GET)', async () => {
       return await request(app.getHttpServer())
-        .get('/post/' + postId)
+        .get('/api/v1/post/' + postId)
         .set('Authorization', `Bearer ${token}`)
         .then((res) => {
           expect(res.status).toBe(200);
@@ -220,9 +219,9 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/post/:id (PUT)', async () => {
+    it('/api/v1/post/:id (PUT)', async () => {
       return await request(app.getHttpServer())
-        .put('/post/' + postId)
+        .put('/api/v1/post/' + postId)
         .send({
           name: demoPost.name,
           text: demoPost.text,
@@ -237,9 +236,9 @@ describe('AppController (e2e)', () => {
   });
 
   describe('Logout after', () => {
-    it('/user/account/logout (PUT)', async () => {
+    it('/api/v1/user/account/logout (PUT)', async () => {
       return await request(app.getHttpServer())
-        .post('/user/logout')
+        .post('/api/v1/user/logout')
         .set('Authorization', `Bearer ${token}`)
         .then((res) => {
           expect(res.status).toBe(200);

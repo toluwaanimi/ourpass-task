@@ -16,6 +16,7 @@ async function bootstrap() {
   app.set('trust proxy', 1);
   app.disable('x-powered-by');
   app.useGlobalPipes(new ValidationPipe());
+  app.setGlobalPrefix('api/v1/');
   app.enableCors();
   await app.listen(PORT);
   CustomLogger.verbose(
