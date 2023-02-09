@@ -1,0 +1,35 @@
+version: '3'
+services:
+  ourpass_main:
+    container_name: ourpass
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_DB: ourpass
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - ourpass_main:/var/lib/postgresql/data
+  ourpass_test:
+    container_name: ourpass_test
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_DB: ourpass_test
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5431:5432"
+    volumes:
+      - ourpass_test:/var/lib/postgresql/data
+
+  ourpass_redis:
+    image: redis:6.0-alpine
+    ports:
+        - "6377:6379"
+
+volumes:
+  ourpass_main:
+  ourpass_test:

@@ -17,12 +17,7 @@ export const JWT_REFRESH_SECRET = env
   .required()
   .asString();
 
-export const RABBITMQ_URL = env.get('RABBITMQ_URL').asString();
-export const RABBITMQ_QUEUE_NAME = env.get('RABBITMQ_QUEUE_NAME').asString();
-export const RABBITMQ_NOTIFICATION = env
-  .get('RABBITMQ_NOTIFICATION')
-  .asString();
-
+export const TEST_POSTGRES_DB_URL = env.get('TEST_POSTGRES_DB_URL').asString();
 export const POSTGRES_DB_URL = env.get('POSTGRES_DB_URL').required().asString();
 
 export const REDIS_HOST = env.get('REDIS_HOST').asString();

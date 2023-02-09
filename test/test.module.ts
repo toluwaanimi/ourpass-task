@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { POSTGRES_DB_URL } from '../src/config/env.config';
+import { TEST_POSTGRES_DB_URL } from '../src/config/env.config';
 import { ApiModule } from '../src/modules/api.module';
 
 const SnakeNamingStrategy =
@@ -12,7 +12,7 @@ const SnakeNamingStrategy =
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: POSTGRES_DB_URL,
+      url: TEST_POSTGRES_DB_URL,
       logging: false,
       namingStrategy: new SnakeNamingStrategy(),
       synchronize: true,
