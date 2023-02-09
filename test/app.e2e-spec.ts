@@ -53,7 +53,6 @@ describe('AppController (e2e)', () => {
     });
 
     it('/api/v1/user/login (POST)', async () => {
-      console.log(email, password);
       return await request(app.getHttpServer())
         .post('/api/v1/user/login')
         .send({

@@ -81,7 +81,6 @@ export class UserService {
         },
       };
     } catch (e) {
-      console.log(e);
       throw new BadRequestException(
         'Something went wrong, kindly contact support',
       );

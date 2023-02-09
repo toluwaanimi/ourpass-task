@@ -5,13 +5,11 @@ import * as referenceGenerator from 'random-string-generator';
 import * as crypto from 'crypto';
 
 export class Helpers {
-
   static async sendRequest(requestConfig: AxiosRequestConfig): Promise<any> {
     try {
       const response = await axios(requestConfig);
       return response.data;
     } catch (err) {
-      //console.log(err.response.data.message);
       throw new BadRequestException(
         err.response.data.message || err.response.data.error,
       );
@@ -56,10 +54,7 @@ export class Helpers {
       : prefix + referenceGenerator(length, 'uppernumeric');
   }
 
-
   static capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
-
-
 }

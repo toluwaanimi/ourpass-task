@@ -40,9 +40,11 @@ export class AuthGuard implements CanActivate {
       if (!decrypt) {
         throw new UnauthorizedException('Unauthorized request');
       }
+
       const user = await getRepository(User).findOne({
-        where: { id: decrypt.id },
+        where: { id: decrypt.sub },
       });
+
       if (!user) {
         throw new UnauthorizedException('Unauthorized request');
       }
