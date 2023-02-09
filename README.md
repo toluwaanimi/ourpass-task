@@ -84,7 +84,7 @@ POSTGRES_DB_URL=postgres://localhost/ourpass_task
 
 POSTGRES_DB_URL=postgresql://root:password@localhost:5433/ourpass
 REDIS_HOST=
-REDIS_PORT=6379
+REDIS_PORT=6377
 REDIS_PASSWORD=
 
 JWT_SECRET=JWT_SECRET
