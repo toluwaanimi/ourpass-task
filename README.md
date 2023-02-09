@@ -82,6 +82,7 @@ Create a .env file in the root directory and add your database details. It shoul
 PORT=4000
 POSTGRES_DB_URL=postgres://localhost/ourpass_task
 
+POSTGRES_DB_URL=postgresql://root:password@localhost:5433/ourpass
 REDIS_HOST=
 REDIS_PORT=6379
 REDIS_PASSWORD=
@@ -92,7 +93,7 @@ JWT_SECRET_EXPIRES=3600
 
 
 NODE_TLS_REJECT_UNAUTHORIZED=0
-TEST_DB_URL=postgres://localhost/test
+TEST_POSTGRES_DB_URL=postgresql://root:password@localhost:5431/ourpass_test
 ```
 
 Kindly replace these values with the appropriate values based on your Database environment
