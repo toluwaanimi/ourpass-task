@@ -5,6 +5,7 @@ import { getConnection } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { TestModule } from './test.module';
 import { demoCategory } from './category/category.mock';
+import { demoPost } from './post/post.mock';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -167,12 +168,65 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/category/:id (GET)', async () => {
+    it('/category/:id (PUT)', async () => {
       return await request(app.getHttpServer())
         .put('/category/' + categoryId)
         .send({
           name: demoCategory.name,
           slug: demoCategory.slug,
+        })
+        .set('Authorization', `Bearer ${token}`)
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+        });
+    });
+  });
+
+  describe('Post Routes', () => {
+    it('/post (POST)', async () => {
+      return await request(app.getHttpServer())
+        .post('/post')
+        .send({
+          name: demoPost.name,
+          text: demoPost.text,
+          categoryId: categoryId,
+        })
+        .set('Authorization', `Bearer ${token}`)
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+          postId = res.body.data.id;
+        });
+    });
+
+    it('/post (GET)', async () => {
+      return await request(app.getHttpServer())
+        .get('/post')
+        .set('Authorization', `Bearer ${token}`)
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+        });
+    });
+
+    it('/post/:id (GET)', async () => {
+      return await request(app.getHttpServer())
+        .get('/post/' + postId)
+        .set('Authorization', `Bearer ${token}`)
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+        });
+    });
+
+    it('/post/:id (PUT)', async () => {
+      return await request(app.getHttpServer())
+        .put('/post/' + postId)
+        .send({
+          name: demoPost.name,
+          text: demoPost.text,
+          categoryId: categoryId,
         })
         .set('Authorization', `Bearer ${token}`)
         .then((res) => {
