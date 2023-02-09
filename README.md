@@ -1,73 +1,158 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# OurPass Task
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Documentation of OurPass Task
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Author 🚀
 
-## Description
+> ADEBAYO EMMANUEL TOLUWANIMI
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Technologies
 
-## Installation
+- Node JS
+- NestJS
+- Typeorm
+- Docker
+- Redis
 
-```bash
-$ npm install
+---
+
+## Database
+
+- [Postgres](https://www.postgresql.org/) (TypeORM)
+
+---
+
+## Install NodeJS
+
+To Install NodeJS, kindly go to [Nodejs](https://nodejs.com) and follow the necessary instructions required depending on
+your PC Operating System
+
+## MACOS
+
+using a [package](https://nodejs.org/en/#download) simply download the installer
+
+using [homebrew](https://github.com/Homebrew/legacy-homebrew)
+
+```markdown
+brew install node
 ```
 
-## Running the app
+---
 
-```bash
-# development
-$ npm run start
+## Windows
 
-# watch mode
-$ npm run start:dev
+using a [package](https://nodejs.org/en/#download) simply download the installer
 
-# production mode
-$ npm run start:prod
+using [chocolatey](http://chocolatey.org/) to install Node
+
+```markdown
+cinst nodejs
 ```
 
-## Test
+---
 
-```bash
-# unit tests
-$ npm run test
+## To install Postgres
 
-# e2e tests
-$ npm run test:e2e
+For Windows users, you can kindly follow this
+tutorials [here](https://learnsql.com/blog/how-to-install-postgresql-on-windows-in-5-minutes/) to install Postgres on
+your local PC which explains how to create a database
 
-# test coverage
-$ npm run test:cov
+For Mac users, you can kindly follow this tutorials [here](https://www.robinwieruch.de/postgres-sql-macos-setup)  to
+install Postgres on your local PC which explains how to create a database
+
+
+---
+
+## Setup Database
+
+To setup your database for the project, after creation kindly open the app.module.ts file in the  folder of the
+project and replace with your credentials
+
+```markdown
+  ... 
+   url: db url here,
 ```
 
-## Support
+### OR
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Create a .env file in the root directory and add your database details. It should have the following properties
 
-## Stay in touch
+```markdown
+PORT=4000
+POSTGRES_DB_URL=postgres://localhost/ourpass_task
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+REDIS_HOST=
+REDIS_PORT=6379
+REDIS_PASSWORD=
 
-## License
+JWT_SECRET=JWT_SECRET
+JWT_REFRESH_SECRET=JWT_REFRESH_SECRET
+JWT_SECRET_EXPIRES=3600
 
-Nest is [MIT licensed](LICENSE).
+
+NODE_TLS_REJECT_UNAUTHORIZED=0
+TEST_DB_URL=postgres://localhost/test
+```
+
+Kindly replace these values with the appropriate values based on your Database environment
+---
+
+## Start Development
+
+Kindly clone the repo `https://github.com/toluwaanimi/ourpass-task.git`
+
+### Installation
+
+To install the necessary packages, in your folder directory kindly run
+
+```markdown
+npm i
+
+# or
+
+yarn add
+```
+
+* To continuously watch for changes
+    * ```markdown 
+      npm run dev
+      ```
+
+* To build your app for production
+    * ```markdown
+      npm run build
+         ```
+
+
+* To run your app server for production
+    * ```markdown
+      npm run start
+         ```
+
+* To run your E2E Test
+    * ```markdown
+      npm run test:e2e
+         ```
+
+
+
+* To run your Test
+    * ```markdown
+      npm run test
+         ```
+
+---
+
+## Implementation Required
+The Documentation can be found at /docs
+# Docker Image
+
+To run a docker image of Postgres and Redis
+```text
+  docker-compose up
+```
+
+
+
+
