@@ -11,12 +11,13 @@ import { setupSwagger } from './config/swagger';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useGlobalFilters(new GlobalExceptionsFilter());
+  app.setGlobalPrefix('/api/v1/');
   setupSwagger(app);
   app.use(compression());
   app.set('trust proxy', 1);
   app.disable('x-powered-by');
   app.useGlobalPipes(new ValidationPipe());
-  app.setGlobalPrefix('api/v1/');
+
   app.enableCors();
   await app.listen(PORT);
   CustomLogger.verbose(

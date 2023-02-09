@@ -30,7 +30,7 @@ import { IUser } from '../../common/interfaces';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post('auth/login')
+  @Post('login')
   @ApiOperation({ summary: 'Login with email and password' })
   @HttpCode(200)
   async loginUser(@Body() body: LoginDTO) {
@@ -38,7 +38,7 @@ export class UserController {
     return HttpResponseHelper.send('login successful', response);
   }
 
-  @Post('auth/register')
+  @Post('register')
   @ApiOperation({ summary: 'Register user account' })
   @HttpCode(200)
   async registerUser(@Body() body: RegisterDTO) {
@@ -46,7 +46,7 @@ export class UserController {
     return HttpResponseHelper.send('registration successful');
   }
 
-  @Post('auth/forgot-password')
+  @Post('forgot-password')
   @ApiOperation({ summary: 'Request forgot password token' })
   @HttpCode(200)
   async forgotPassword(@Body() body: ForgotPasswordDTO) {
@@ -54,7 +54,7 @@ export class UserController {
     return HttpResponseHelper.send('request successful');
   }
 
-  @Post('auth/reset-password')
+  @Post('reset-password')
   @ApiOperation({ summary: 'Reset password with token ' })
   @HttpCode(200)
   async resetPassword(@Body() body: ResetPasswordDTO) {

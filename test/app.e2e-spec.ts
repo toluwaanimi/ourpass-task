@@ -16,6 +16,7 @@ describe('AppController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.setGlobalPrefix('/api/v1/');
     await app.init();
   });
 
@@ -35,9 +36,9 @@ describe('AppController (e2e)', () => {
     const password = 'password';
     const phoneNumber = '+23481' + faker.random.numeric(8);
 
-    it('/api/v1/user/auth/register (POST)', async () => {
+    it('/api/v1/user/register (POST)', async () => {
       return await request(app.getHttpServer())
-        .post('/api/v1/user/auth/register')
+        .post('/api/v1/user/register')
         .send({
           email: email,
           first_name: firstName,
@@ -51,10 +52,10 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/api/v1/user/auth/login (POST)', async () => {
+    it('/api/v1/user/login (POST)', async () => {
       console.log(email, password);
       return await request(app.getHttpServer())
-        .post('/api/v1/user/auth/login')
+        .post('/api/v1/user/login')
         .send({
           email: email,
           password: password,
@@ -76,9 +77,9 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/api/v1/user/auth/forgot-password (POST)', async () => {
+    it('/api/v1/user/forgot-password (POST)', async () => {
       return await request(app.getHttpServer())
-        .post('/api/v1/user/auth/forgot-password')
+        .post('/api/v1/user/forgot-password')
         .send({
           email: email,
         })
@@ -88,9 +89,9 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    it('/api/v1/user/auth/reset-password (POST)', async () => {
+    it('/api/v1/user/reset-password (POST)', async () => {
       return await request(app.getHttpServer())
-        .post('/api/v1/user/auth/reset-password')
+        .post('/api/v1/user/reset-password')
         .send({
           password: 'password',
           code: '123456',
