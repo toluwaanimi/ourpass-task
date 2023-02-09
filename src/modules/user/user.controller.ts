@@ -75,6 +75,8 @@ export class UserController {
   @Put('account')
   @ApiOperation({ summary: 'update user account' })
   @HttpCode(200)
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   async updateProfile(
     @Body() body: UpdateAccountDTO,
     @GetCurrentUser() user: IUser,
@@ -83,9 +85,11 @@ export class UserController {
     return HttpResponseHelper.send('updated  successfully');
   }
 
-  @Put('account')
-  @ApiOperation({ summary: 'update user account' })
+  @Put('account/password')
+  @ApiOperation({ summary: 'update user account password' })
   @HttpCode(200)
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   async changePassword(
     @Body() body: ChangePasswordDTO,
     @GetCurrentUser() user: IUser,

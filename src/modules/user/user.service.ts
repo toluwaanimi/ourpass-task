@@ -19,7 +19,7 @@ export class UserService {
   async login(input: ILogin): Promise<IService> {
     const user = await this.userRepository.findOne({
       where: {
-        email: input.email,
+        email: input.email.toLowerCase(),
       },
     });
     if (!user) {
@@ -105,7 +105,7 @@ export class UserService {
   async forgotPassword(payload: { email: string }): Promise<IService> {
     const user = await this.userRepository.findOne({
       where: {
-        email: payload.email,
+        email: payload.email.toLowerCase(),
       },
     });
     if (!user) {

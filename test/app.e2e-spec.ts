@@ -1,24 +1,140 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { getConnection } from 'typeorm';
+import { faker } from '@faker-js/faker';
+import { TestModule } from './test.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [TestModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  afterAll(async () => {
+    await getConnection().synchronize(true);
+    await app.close();
+  });
+
+  let token = '';
+
+  describe('Endpoints', () => {
+    const email = faker.internet.email();
+    const firstName = faker.name.firstName();
+    const lastName = faker.name.lastName();
+    const password = 'password';
+    const phoneNumber = '+23481' + faker.random.numeric(8);
+
+    it('/user/auth/register (POST)', async () => {
+      return await request(app.getHttpServer())
+        .post('/user/auth/register')
+        .send({
+          email: email,
+          first_name: firstName,
+          last_name: lastName,
+          password: password,
+          phone_number: phoneNumber,
+        })
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+        });
+    });
+
+    it('/user/auth/login (POST)', async () => {
+      console.log(email, password);
+      return await request(app.getHttpServer())
+        .post('/user/auth/login')
+        .send({
+          email: email,
+          password: password,
+        })
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+          token = res.body.data.token;
+        });
+    });
+
+    it('/account (GET)', async () => {
+      return await request(app.getHttpServer())
+        .get('/user/account')
+        .set('Authorization', `Bearer ${token}`)
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+        });
+    });
+
+    it('/user/auth/forgot-password (POST)', async () => {
+      return await request(app.getHttpServer())
+        .post('/user/auth/forgot-password')
+        .send({
+          email: email,
+        })
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+        });
+    });
+
+    it('/user/auth/reset-password (POST)', async () => {
+      return await request(app.getHttpServer())
+        .post('/user/auth/reset-password')
+        .send({
+          password: 'password',
+          code: '123456',
+        })
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+        });
+    });
+
+    it('/user/account (PUT)', async () => {
+      return await request(app.getHttpServer())
+        .put('/user/account')
+        .send({
+          first_name: firstName,
+          last_name: lastName,
+          phone_number: phoneNumber,
+        })
+        .set('Authorization', `Bearer ${token}`)
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+        });
+    });
+
+    it('/account/password (PUT)', async () => {
+      return await request(app.getHttpServer())
+        .put('/user/account/password')
+        .send({
+          password: password,
+          old_password: password,
+        })
+        .set('Authorization', `Bearer ${token}`)
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+        });
+    });
+
+    it('/user/account/logout (PUT)', async () => {
+      return await request(app.getHttpServer())
+        .post('/user/logout')
+        .set('Authorization', `Bearer ${token}`)
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.status).toBe(true);
+        });
+    });
+    //
   });
 });
