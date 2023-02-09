@@ -10,7 +10,6 @@ import {
 export const setupSwagger = (app: INestApplication) => {
   const options = new DocumentBuilder()
     .setTitle(SWAGGER_API_NAME)
-    .setBasePath('api/v1')
     .setDescription(SWAGGER_API_DESCRIPTION)
     .setVersion(SWAGGER_API_CURRENT_VERSION)
     .addBearerAuth()

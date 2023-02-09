@@ -7,6 +7,7 @@ import { NODE_ENV, PORT } from './config/env.config';
 import { CustomLogger } from './common/logger/logger';
 import * as compression from 'compression';
 import { setupSwagger } from './config/swagger';
+import { seedRecord } from './common/database/seeder/seeder';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -23,5 +24,7 @@ async function bootstrap() {
   CustomLogger.verbose(
     `OurPass started on ${NODE_ENV} environment with port ${PORT}`,
   );
+
+  seedRecord().then();
 }
 bootstrap().then();
